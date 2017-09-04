@@ -1,6 +1,6 @@
 /**
-*	@author 
-*	@date 
+*	@author
+*	@date
 *	@file LinkedList.hpp
 *	@brief Implementation file for templated LinkedList class
 */
@@ -12,7 +12,7 @@ LinkedList<T>::LinkedList() : m_front(nullptr), m_size(0)
 }
 
 template <typename T>
-LinkedList<T>::~LinkedList() 
+LinkedList<T>::~LinkedList()
 {
 	while(!isEmpty())
 	{
@@ -37,7 +37,10 @@ bool LinkedList<T>::search(T value) const
 {
 	Node<T>* temp = m_front;
 	bool isFound = false;
-
+	if (temp == nullptr)
+	{
+		return 0;
+	}
 	do
  	{
    	  if(temp->getValue()==value)
@@ -48,6 +51,7 @@ bool LinkedList<T>::search(T value) const
   	}while (temp != nullptr);
 
 	return (isFound);
+}
 
 template <typename T>
 std::vector<T> LinkedList<T>::toVector() const
@@ -61,8 +65,8 @@ std::vector<T> LinkedList<T>::toVector() const
 		temp = temp->getNext();
 	}
 
-	return(vec);	
-	
+	return(vec);
+
 }
 
 template <typename T>
@@ -72,7 +76,7 @@ void LinkedList<T>::addBack(T value)
 
 	if(isEmpty())
 	{
-		m_front = new Node<T>(value);	
+		m_front = new Node<T>(value);
 	}
 	else
 	{
@@ -82,7 +86,7 @@ void LinkedList<T>::addBack(T value)
 			temp = temp->getNext();
 		}
 
-		temp->setNext( new Node<T>(value) );		
+		temp->setNext( new Node<T>(value) );
 	}
 
 	m_size++;
@@ -100,22 +104,29 @@ void LinkedList<T>::addFront(T value)
 template <typename T>
 bool LinkedList<T>::removeBack()
 {
-	Node<T>* lastNode = nullptr;
-	Node<T>* secondintoLast = nullptr;
-	bool isRemoved = false;
-
-	while(lastNode != nullptr)
+	if (m_front==nullptr)
 	{
-		secondintoLast = lastNode;
-		lastNode = lastNode->getNext();
+		return false;
 	}
-	lastNode=nullptr;
-	delete lastNode;
-	secondintoLast=nullptr;
-	delete secondintoLast;
+	else
+	{
+		Node<T>* lastNode = m_front;
+		Node<T>* secondintoLast = m_front;
+		bool isRemoved = false;
 
-	return(isRemoved);
-}	
+		while(lastNode != nullptr)
+		{
+			secondintoLast = lastNode;
+			lastNode = lastNode->getNext();
+		}
+		lastNode=nullptr;
+		delete lastNode;
+		secondintoLast=nullptr;
+		delete secondintoLast;
+		m_size--;
+		return(isRemoved);
+	}
+}
 
 template <typename T>
 bool LinkedList<T>::removeFront()
